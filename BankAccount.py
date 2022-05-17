@@ -1,8 +1,8 @@
 import math
 import datetime as dt
 
-class Customer:
-    def __init__(self, cellPhone, addLine1, city, prov, postCode, name, acct=None, workPhone=None, homePhone=None, addLine2=None):
+class Customer():
+    def __init__(self, name, cellPhone, addLine1="", addLine2=None, city="", prov="", postCode="", acct=None, workPhone=None, homePhone=None):
         self._name = name
         self._acct = acct
         self._workphone = workPhone
@@ -15,12 +15,16 @@ class Customer:
         self._postCode = postCode
 
 
-class Account:
-    def __init__(self, acctNum, branchNum, status='open', dateOpened=dt.datetime.today(), subAccts=None):
+class Account():
+    def __init__(self, acctNum, branchNum, status='open', dateOpened=dt.datetime.today(), subAccts=[]):
         self._acctNum = acctNum
         self._branchNum = branchNum
         self._status = status
         self._dateOpened = dateOpened
         self._subAccts = subAccts
+
+class SubAccount():
+    pass
+
 
 print(dt.datetime.today())
