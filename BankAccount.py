@@ -21,8 +21,11 @@ class Customer():
 
     @name.setter
     def name(self, name):
-        if len(name) == 0: raise Exception("Must have at least one character in name")
+        if len(name) == 0:
+            print(False, file=sys.stderr)
+            raise Exception("Must have at least one character in name")
         self._name = name
+        print(True, file=sys.stderr)
 
     @property
     def acct(self):
@@ -134,3 +137,6 @@ class Account():
 
 class SubAccount():
     pass
+
+
+Customer("", "1234567890", "", None, "", "", "123456", None, None, None)
