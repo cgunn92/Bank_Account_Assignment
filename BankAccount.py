@@ -1,29 +1,45 @@
+import sys
 import math
 import datetime as dt
 
 class Customer():
     def __init__(self, name, cellPhone="", addLine1="", addLine2=None, city="", prov="", postCode="", acct=None, workPhone=None, homePhone=None):
-        self._name = name
-        self._acct = acct
-        self._workphone = workPhone
-        self._homePhone = homePhone
-        self._cellPhone = cellPhone
-        self._addLine1 = addLine1
-        self._addLine2 = addLine2
-        self._city = city
-        self._prov = prov
-        self._postCode = postCode
+        self.name = name
+        self.acct = acct
+        self.workphone = workPhone
+        self.homePhone = homePhone
+        self.cellPhone = cellPhone
+        self.addLine1 = addLine1
+        self.addLine2 = addLine2
+        self.city = city
+        self.prov = prov
+        self.postCode = postCode
 
-    def get_name(self):
+    @property
+    def name(self):
         return self._name
 
-    def set_name(self, name):
+    @name.setter
+    def name(self, name):
+        if len(name) == 0: raise Exception("Must have at least one character in name")
         self._name = name
 
-    def get_cellPhone(self):
+    @property
+    def acct(self):
+        return self._acct
+    
+    @acct.setter
+    def acct(self, acct):
+        self._acct = acct
+        
+    @property
+    def cellPhone(self):
         return self._cellPhone
 
-    def set_cellPhone(self, cellPhone):
+    @cellPhone.setter
+    def cellPhone(self, cellPhone):
+        if not cellPhone: raise Exception("Must have a 10 digit cell phone number")
+        if not (len(cellPhone) == 10): raise Exception("Must have a 10 digit cell phone number")
         self._cellPhone = cellPhone
 
     def get_workPhone(self):
@@ -38,10 +54,12 @@ class Customer():
     def set_homePhone(self, homePhone):
         self._homePhone = homePhone
 
-    def get_addLine1(self):
+    @property
+    def addLine1(self):
         return self._addLine1
 
-    def set_addLine1(self, addLine1):
+    @addLine1.setter
+    def addLine1(self, addLine1):
         self._addLine1 = addLine1
 
     def get_addLine2(self):
@@ -50,22 +68,30 @@ class Customer():
     def set_addLine2(self, addLine2):
         self._addLine2 = addLine2
 
-    def get_city(self):
+    @property
+    def city(self):
         return self._city
 
-    def set_city(self, city):
+    @city.setter
+    def city(self, city):
         self._city = city
 
-    def get_province(self):
+    @property
+    def prov(self):
         return self._prov
 
-    def set_province(self, prov):
+    @prov.setter
+    def prov(self, prov):
         self._prov = prov
 
-    def get_postCode(self):
+    @property
+    def postCode(self):
         return self._postCode
 
-    def set_postCode(self, postCode):
+    @postCode.setter
+    def postCode(self, postCode):
+        if not postCode: raise Exception("Must enter a postal code")
+        if (len(postCode) < 6) or (len(postCode) > 7): raise Exception("Must enter a valid postal code")
         self._postCode = postCode
 
 class Account():
@@ -108,4 +134,3 @@ class Account():
 
 class SubAccount():
     pass
-
