@@ -42,19 +42,21 @@ class Customer():
     @cellPhone.setter
     def cellPhone(self, cellPhone):
         if not cellPhone: raise Exception("Must have a 10 digit cell phone number")
-        if not (len(cellPhone) == 10): raise Exception("Must have a 10 digit cell phone number")
+        if not (len(cellPhone) == 10): raise Exception("Must have a 10 digit phone number")
         self._cellPhone = cellPhone
 
     def get_workPhone(self):
         return self._workphone
 
     def set_workPhone(self, workPhone):
+        if not (len(workPhone) == 10): raise Exception("Must have a 10 digit phone number")
         self._workphone = workPhone
 
     def get_homePhone(self):
         return self._homePhone
 
     def set_homePhone(self, homePhone):
+        if not (len(homePhone) == 10): raise Exception("Must have a 10 digit phone number")
         self._homePhone = homePhone
 
     @property
@@ -63,7 +65,14 @@ class Customer():
 
     @addLine1.setter
     def addLine1(self, addLine1):
+        if not addLine1:
+            print(False, file=sys.stderr)
+            raise Exception("Must enter an address")
+        elif len(addLine1) == 0:
+            print(False, file=sys.stderr)
+            raise Exception("Must enter a valid address")
         self._addLine1 = addLine1
+        print(True, file=sys.stderr)
 
     def get_addLine2(self):
         return self._addLine2
@@ -77,7 +86,14 @@ class Customer():
 
     @city.setter
     def city(self, city):
+        if not city:
+            print(False, file=sys.stderr)
+            raise Exception("Must enter a city")
+        elif len(city) == 0:
+            print(False, file=sys.stderr)
+            raise Exception("Must enter a valid city")
         self._city = city
+        print(True, file=sys.stderr)
 
     @property
     def prov(self):
@@ -85,6 +101,12 @@ class Customer():
 
     @prov.setter
     def prov(self, prov):
+        if not prov:
+            print(False, file=sys.stderr)
+            raise Exception("Must enter a province")
+        elif len(prov) == 0:
+            print(False, file=sys.stderr)
+            raise Exception("Must enter a valid province")
         self._prov = prov
 
     @property
@@ -93,50 +115,59 @@ class Customer():
 
     @postCode.setter
     def postCode(self, postCode):
-        if not postCode: raise Exception("Must enter a postal code")
-        if (len(postCode) < 6) or (len(postCode) > 7): raise Exception("Must enter a valid postal code")
+        if not postCode:
+            print(False, file=sys.stderr)
+            raise Exception("Must enter a postal code")
+        if (len(postCode) < 6) or (len(postCode) > 7):
+            print(False, file=sys.stderr)
+            raise Exception("Must enter a valid postal code")
         self._postCode = postCode
+        print(True, file=sys.stderr)
 
 class Account():
-    def __init__(self, acctNum, branchNum, status='open', dateOpened=dt.datetime.today(), subAccts=[]):
-        self._acctNum = acctNum
-        self._branchNum = branchNum
-        self._status = status
-        self._dateOpened = dateOpened
-        self._subAccts = subAccts
+    def __init__(self, acctNum='1', branchNum='1', status='open', dateOpened=dt.datetime.today(), subAccts=[]):
+        self.acctNum = acctNum
+        self.branchNum = branchNum
+        self.status = status
+        self.dateOpened = dateOpened
+        self.subAccts = subAccts
 
-    def get_acctNum(self):
+    @property
+    def acctNum(self):
         return self._acctNum
 
-    def set_acctNum(self, acctNum):
+    @acctNum.setter
+    def acctNum(self, acctNum):
         self._acctNum = acctNum
 
-    def get_branchNum(self):
+    @property
+    def branchNum(self):
         return self._branchNum
 
-    def set_branchNum(self, branchNum):
+    @branchNum.setter
+    def branchNum(self, branchNum):
         self._branchNum = branchNum
 
-    def get_status(self):
+    @property
+    def status(self):
         return self._status
 
-    def set_status(self, status):
+    @status.setter
+    def status(self, status):
         self._status = status
 
-    def get_dateOpened(self):
-        return self._dateOpened
-
-    def set_dateOpened(self, dateOpened):
-        self._dateOpened = dateOpened
+    def get_dateOpened(self):    #I chose to omit a setter function for dateOpened
+        return self._dateOpened  #because that is immutable
 
     def get_subAccts(self):
         return self._subAccts
 
-    def set_subAccts(self, subAccts):
-        self._subAccts = subAccts
+    def set_subAccts(self, SubAccount):
+        self._subAccts = SubAccount()
 
 class SubAccount():
-    pass
+    def __init__(self):
+        pass
 
 
 Customer("", "1234567890", "", None, "", "", "123456", None, None, None)
