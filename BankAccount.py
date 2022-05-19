@@ -22,10 +22,10 @@ class Customer():
     @name.setter
     def name(self, name):
         if len(name) == 0:
-            print(False, file=sys.stderr)
-            raise Exception("Must have at least one character in name")
+            sys.stderr.write("Must have at least one character in name")
+            return False
         self._name = name
-        print(True, file=sys.stderr)
+        return True
 
     @property
     def acct(self):
@@ -33,7 +33,13 @@ class Customer():
     
     @acct.setter
     def acct(self, acct):
+        if acct == None:
+            return True
+        elif len(acct) == 0:
+            sys.stderr.write('Must enter a valid account number')
+            return False
         self._acct = acct
+        return True
         
     @property
     def cellPhone(self):
@@ -41,23 +47,34 @@ class Customer():
 
     @cellPhone.setter
     def cellPhone(self, cellPhone):
-        if not cellPhone: raise Exception("Must have a 10 digit cell phone number")
-        if not (len(cellPhone) == 10): raise Exception("Must have a 10 digit phone number")
+        if not cellPhone:
+            sys.stderr.write("Must have a 10 digit cell phone number")
+            return False
+        if not (len(cellPhone) == 10):
+            sys.stderr.write("Must have a 10 digit phone number")
+            return False
         self._cellPhone = cellPhone
+        return True
 
     def get_workPhone(self):
         return self._workphone
 
     def set_workPhone(self, workPhone):
-        if not (len(workPhone) == 10): raise Exception("Must have a 10 digit phone number")
+        if not (len(workPhone) == 10):
+            sys.stderr.write("Must have a 10 digit phone number")
+            return False
         self._workphone = workPhone
+        return True
 
     def get_homePhone(self):
         return self._homePhone
 
     def set_homePhone(self, homePhone):
-        if not (len(homePhone) == 10): raise Exception("Must have a 10 digit phone number")
+        if not (len(homePhone) == 10):
+            sys.stderr.write("Must have a 10 digit phone number")
+            return False
         self._homePhone = homePhone
+        return True
 
     @property
     def addLine1(self):
@@ -66,11 +83,11 @@ class Customer():
     @addLine1.setter
     def addLine1(self, addLine1):
         if not addLine1:
-            print(False, file=sys.stderr)
-            raise Exception("Must enter an address")
+            sys.stderr.write("Must enter an address")
+            return False
         elif len(addLine1) == 0:
-            print(False, file=sys.stderr)
-            raise Exception("Must enter a valid address")
+            sys.stderr.write("Must enter a valid address")
+            return False
         self._addLine1 = addLine1
         print(True, file=sys.stderr)
 
@@ -87,13 +104,13 @@ class Customer():
     @city.setter
     def city(self, city):
         if not city:
-            print(False, file=sys.stderr)
-            raise Exception("Must enter a city")
+            sys.stderr.write("Must enter a city")
+            return False
         elif len(city) == 0:
-            print(False, file=sys.stderr)
-            raise Exception("Must enter a valid city")
+            sys.stderr.write("Must enter a valid city")
+            return False
         self._city = city
-        print(True, file=sys.stderr)
+        return True
 
     @property
     def prov(self):
@@ -102,12 +119,13 @@ class Customer():
     @prov.setter
     def prov(self, prov):
         if not prov:
-            print(False, file=sys.stderr)
-            raise Exception("Must enter a province")
+            sys.stderr.write("Must enter a province")
+            return False
         elif len(prov) == 0:
-            print(False, file=sys.stderr)
-            raise Exception("Must enter a valid province")
+            sys.stderr.write("Must enter a valid province")
+            return False
         self._prov = prov
+        return True
 
     @property
     def postCode(self):
@@ -116,13 +134,13 @@ class Customer():
     @postCode.setter
     def postCode(self, postCode):
         if not postCode:
-            print(False, file=sys.stderr)
-            raise Exception("Must enter a postal code")
+            sys.stderr.write('Must enter a postal code')
+            return False
         if (len(postCode) < 6) or (len(postCode) > 7):
-            print(False, file=sys.stderr)
-            raise Exception("Must enter a valid postal code")
+            sys.stderr.write("Must enter a valid postal code")
+            return False
         self._postCode = postCode
-        print(True, file=sys.stderr)
+        return True
 
 class Account():
     def __init__(self, acctNum='1', branchNum='1', status='open', dateOpened=dt.datetime.today(), subAccts=[]):
