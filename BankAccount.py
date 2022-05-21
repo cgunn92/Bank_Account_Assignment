@@ -147,16 +147,18 @@ class Account():
         self.acctNum = acctNum
         self.branchNum = branchNum
         self.status = status
-        self.dateOpened = dateOpened
+        self.dateOpened = dt.datetime.today()
         self.subAccts = subAccts
 
     @property
-    def acctNum(self):
+    def acctNum(self):          #Account number setter is ommitted because it should not change
         return self._acctNum
-
+    
     @acctNum.setter
     def acctNum(self, acctNum):
-        self._acctNum = acctNum
+        if len(acctNum) != "1":
+            sys.stderr.write("Enter a valid acct number")
+        
 
     @property
     def branchNum(self):
@@ -188,4 +190,12 @@ class SubAccount():
         pass
 
 
-Customer("", "1234567890", "", None, "", "", "123456", None, None, None)
+# Customer("", "1234567890", "", None, "", "", "123456", None, None, None)
+
+newAccount = Account("1", '1', 'open', '', [])
+
+print(newAccount.branchNum)
+
+newAccount.branchNum('2')
+
+print(newAccount.branchNum)
