@@ -1,5 +1,4 @@
 import sys
-import math
 import datetime as dt
 
 class Customer():
@@ -58,7 +57,7 @@ class Customer():
             return True, None
         elif (len(workPhone) != 10):
             sys.stderr.write("Must have a 10 digit phone number")
-            return False
+            return False, self._workPhone
         self._workPhone = workPhone
         return True, self._workPhone
 
@@ -70,7 +69,7 @@ class Customer():
             return True, None
         elif not (len(homePhone) == 10):
             sys.stderr.write("Must have a 10 digit phone number")
-            return False
+            return False, self._homePhone
         self._homePhone = homePhone
         return True, self._homePhone
 
@@ -138,54 +137,85 @@ class Customer():
         return True, self._postCode
 
 class Account():
-    def __init__(self, balance, status, acctNum='1', branchNum='1', subAccts=[]):
+    def __init__(self, balance, acctNum='1', branchNum='1'):
         self._acctNum = self.set_acctNum(acctNum)[1]
         self._branchNum = branchNum
-        self._status = self.set_status(status)[1]
+        self._status = "open"
         self._dateOpened = dt.datetime.today()
-        self._subAccts = subAccts
-        self._balance = balance
+        self._subAccts = []
+        self._balance = self.set_balance(balance)[1]
 
-    def get_acctNum(self):          #Account number setter is ommitted because it should not change
+    def get_acctNum(self):
         return self._acctNum
     
     def set_acctNum(self, acctNum):
-        if len(acctNum) != "1":
-            sys.stderr.write("Enter a valid acct number")
-            return False
-        elif 
+        return True, None
         
-
-    @property
-    def branchNum(self):
+    def get_branchNum(self):
         return self._branchNum
 
-    @branchNum.setter
-    def branchNum(self, branchNum):
+    def set_branchNum(self, branchNum):
         self._branchNum = branchNum
 
     def get_status(self):
         return self._status
 
     def set_status(self, status):
-        self._status = status
+        options = ['open', 'closed', 'frozen']
+        if self._status == None:
+            self._status = "open"
+            return True, self._status
+        elif self._status == options[1]:
+            sys.stderr.write("Cannot change status of a closed account")
+            return False, self._status
+        elif status not in options:
+            sys.stderr.write("Status can be one of \'open\', \'closed\', \'frozen\' ")
+            return False, self._status
+        else:
+            self._status = status
+            return True, self._status
 
     def get_dateOpened(self):    #I chose to omit a setter function for dateOpened
         return self._dateOpened  #because that is immutable
 
     def get_subAccts(self):
         return self._subAccts
+        
+    def add_subAccts(self, subAccount):
+        self._subAccts.append(subAccount)
+        return True
+        
+    def del_subAccts(self, subAccount):     
+        if subAccount in self._subAccts:
+            self._subAccts = [x for x in self._subAccts if x != subAccount]
+            return True
+        else:
+            sys.stderr.write("Specified Sub Account does not exist so nothing was removed ")
+            return False
 
-    def set_subAccts(self):
-        self._subAccts = SubAccount()
-
-class SubAccount():
-    def __init__(self):
-        pass
+    def get_balance(self):
+        return "{.2f}".format(self._balance // 100)
     
-    
-newC = Customer("Caleb", "1234567890", "1234", None, "Carlton", "Oregon", "v2r 5c7", "1", None, None)
-print(newC.get_name())
-
-newA = Account(32, "open", '1', '1', [])
-print(newA._status)
+    def set_balance(self, balance):
+        if balance > 2147483647 or balance < -2147483648:
+            sys.stderr.write("Balance out of range")
+            return False, None
+        else:
+            self._balance = balance
+            return True, self._balance
+        
+    def add_money(self, monies):
+        if self._balance + monies > 2147483647:
+            sys.stderr.write('Deposited amount exceeds account limit')
+            return False, self._balance
+        else:
+            self._balance += monies
+            return True, self._balance
+        
+    def take_money(self, monies):
+        if self._balance - monies < -2147483648:
+            sys.stderr.write('Withdrawn amount exceeds account withdrawal limit')
+            return False, self._balance
+        else:
+            self._balance -= monies
+            return True, self._balance
